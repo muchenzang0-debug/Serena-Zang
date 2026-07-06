@@ -45,13 +45,9 @@ For your second milestone, explain what you've worked on since your previous mil
 
 **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
-<iframe width="560" height="315" src="https://youtu.be/zhq4V-HXmNw" title="Serena's First Milestone Video of Optical Recognition with RPi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UEq7qhS2AMM?si=RUkRT2JAVURhNseN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For your first milestone, describe what your project is and how you plan to build it. You can include:
-- An explanation about the different components of your project and how they will all integrate together
-- Technical progress you've made so far
-- Challenges you're facing and solving in your future milestones
-- What your plan is to complete your project
+This optical recognition project uses a Raspberry Pi as the core hardware with a camera and microphone for input and a speaker as an output; I connect my Mac to the Pi via SSH by entering its username and hostname in the Mac terminal, and enable VNC over SSH to open the Pi’s graphical desktop remotely on my Mac, where I can edit code and run project scripts without physical monitors or peripherals attached to the Pi. I have faced two main challenges: frequent SSH connection failures that required repeated SD card reflashes, and poor camera text recognition caused by low-quality captured images. To improve stability long-term, I will learn to troubleshoot broken SSH configurations and network settings directly within the Pi’s operating system instead of fully resetting the device and adjust lighting plus add image preprocessing to sharpen photos for better OCR accuracy. My plan is to finish all core base code in the second week, then spend the final week making only software modifications with no changes to my Raspberry Pi, camera or microphone hardware setup.
 
 # Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
