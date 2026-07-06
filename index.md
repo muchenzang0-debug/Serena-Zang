@@ -47,6 +47,7 @@ For your second milestone, explain what you've worked on since your previous mil
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UEq7qhS2AMM?si=RUkRT2JAVURhNseN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+
 This optical recognition project uses a Raspberry Pi as the core hardware with a camera and microphone for input and a speaker as an output; I connect my Mac to the Pi via SSH by entering its username and hostname in the Mac terminal, and enable VNC over SSH to open the Pi’s graphical desktop remotely on my Mac, where I can edit code and run project scripts without physical monitors or peripherals attached to the Pi. I have faced two main challenges: frequent SSH connection failures that required repeated SD card reflashes, and poor camera text recognition caused by low-quality captured images. To improve stability long-term, I will learn to troubleshoot broken SSH configurations and network settings directly within the Pi’s operating system instead of fully resetting the device and adjust lighting plus add image preprocessing to sharpen photos for better OCR accuracy. My plan is to finish all core base code in the second week, then spend the final week making only software modifications with no changes to my Raspberry Pi, camera or microphone hardware setup.
 
 # Schematics 
