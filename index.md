@@ -1,15 +1,10 @@
 # Optical Character Recognition with RPi
 The microphone captures voice commands, and the Raspberry Pi processes them using softwares to trigger actions like text scanning. After recognizing the text, the device reads it out loud through the speaker. This tool serves both accessibility and educational purposes, by assisting the visually impaired through reading the text out loud and supporting language learners with pronunciation and listening.
 
-You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
-```HTML 
-<!--- This is an HTML comment in Markdown -->
-<!--- Anything between these symbols will not render on the published site -->
-```
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
-| FirstName LastInitialOnly | School Name | Electrical Engineering | Incoming Senior
+| Serena Z | No.2 High School of East China Normal University | Electrical Engineering | Incoming 10th grade
 
 **Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
 
@@ -43,7 +38,6 @@ For your second milestone, explain what you've worked on since your previous mil
 
 # First Milestone
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UEq7qhS2AMM?si=RUkRT2JAVURhNseN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>  
 
