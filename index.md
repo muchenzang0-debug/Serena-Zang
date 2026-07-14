@@ -28,11 +28,7 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/P-nca7DA0sM?si=mtzGq3tXl9UR2Skp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
-- Technical details of what you've accomplished and how they contribute to the final goal
-- What has been surprising about the project so far
-- Previous challenges you faced that you overcame
-- What needs to be completed before your final milestone 
+The base system relies on three core technologies. First, the microphone uses Vosk, which is an offline speech recognition engine that listens through the microphone and converts my voice commands into text. Second, after the camera takes a photo, the image goes through preprocessing steps like resizing, grayscale conversion, and thresholding to make the text clearer, and then Tesseract OCR extracts the actual text from the image. Third, the speaker relies on eSpeak, an offline speech synthesizer that reads the extracted text aloud through the speaker. When I switch to online mode, it uses Edge TTS for more natural Chinese pronunciation. These three components — Vosk, Tesseract, and eSpeak — work together as a complete offline-compatible pipeline. One surprising discovery was that even with a low-resolution camera, the preprocessing steps still made text extraction possible. Another challenge was integration — every time I added a new component, the system would break, even though each part worked perfectly on its own. I had to revise the code multiple times to get everything working together. A few lessons learned: always check the microphone's sample rate and make sure the speaker volume is properly set. Looking ahead, I hope my system will eventually support multiple languages, such as Chinese, French, and Spanish.
 
 # First Milestone
 
