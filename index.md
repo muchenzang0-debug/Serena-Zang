@@ -43,17 +43,208 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 # Code
 Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
-```c++
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  Serial.println("Hello World!");
-}
+```python
+import cv2
+import pytesseract
+from picamera2 import Picamera2
+import numpy as np
+import subprocess
+import os
+import json
+import pyaudio
+from vosk import Model, KaldiRecognizer
+import sys
+import select
+import edge_tts
+import asyncio
 
-void loop() {
-  // put your main code here, to run repeatedly:
+os.environ['ALSA_CARD'] = '3'
 
-}
+MODEL_PATH = "vosk-model-small-en-us-0.15"
+if not os.path.exists(MODEL_PATH):
+    print("ERROR: Model folder not found!")
+    print("Download: wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip")
+    print("Unzip: unzip vosk-model-small-en-us-0.15.zip")
+    exit(1)
+
+model = Model(MODEL_PATH)
+recognizer = KaldiRecognizer(model, 48000)
+
+p = pyaudio.PyAudio()
+
+device_index = None
+for i in range(p.get_device_count()):
+    dev = p.get_device_info_by_index(i)
+    if 'USB' in dev['name']:
+        device_index = i
+        print(f"Found USB microphone at device index: {i}, name: {dev['name']}")
+        break
+
+if device_index is None:
+    device_index = 2
+    print(f"Using default device index: {device_index}")
+
+stream = p.open(
+    format=pyaudio.paInt16,
+    channels=1,
+    rate=48000,
+    input=True,
+    input_device_index=device_index,
+    frames_per_buffer=4000
+)
+
+print("Microphone initialized!")
+
+camera = Picamera2(0)
+config = camera.create_video_configuration(
+    main={"size": (640, 480)}
+)
+camera.configure(config)
+camera.start()
+print("Camera initialized!")
+
+# Mode: True = Online (Edge TTS for Chinese), False = Offline (espeak only)
+online_mode = False
+
+async def speak_chinese(text):
+    tts = edge_tts.Communicate(text, "zh-CN-XiaoxiaoNeural")
+    await tts.save("/tmp/speak.mp3")
+    subprocess.run(["mpg123", "/tmp/speak.mp3"])
+
+def ocr_and_speak(image):
+    global online_mode
+    height, width = image.shape[:2]
+    big_img = cv2.resize(image, (width * 3, height * 3), interpolation=cv2.INTER_CUBIC)
+    gray = cv2.cvtColor(big_img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    binary = cv2.adaptiveThreshold(
+        blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 15, 3
+    )
+    kernel = np.ones((3, 3), np.uint8)
+    clean = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
+
+    text = pytesseract.image_to_string(clean, lang='eng+chi_sim+fra+spa').replace('\n', ' ').strip()
+    
+    # Gentle filter: remove single character noise but keep meaningful words
+    import re
+    # Keep only letters, numbers, spaces, common punctuation, and Chinese characters
+    text = re.sub(r'[^a-zA-Z0-9\s\.\,\!\?\-\'\u4e00-\u9fff]', '', text)
+    # Remove single characters that are likely noise (except 'a', 'I', and Chinese single chars)
+    words = text.split()
+    filtered_words = []
+    for w in words:
+        # Keep if length > 1, or it's 'a'/'I', or it's a Chinese character
+        if len(w) > 1 or w in ['a', 'I'] or any('\u4e00' <= c <= '\u9fff' for c in w):
+            filtered_words.append(w)
+    text = ' '.join(filtered_words)
+    
+    print("Result:\n", text)
+
+    if len(text) == 0:
+        speak_text = "No text detected"
+        subprocess.run(["espeak", "-ven-us", speak_text])
+        return text
+
+    has_chinese = any('\u4e00' <= char <= '\u9fff' for char in text)
+
+    if online_mode and has_chinese:
+        print("Online mode: Chinese detected, using Edge TTS")
+        try:
+            asyncio.run(speak_chinese(text))
+        except:
+            print("Internet connection failed. Falling back to espeak.")
+            subprocess.run(["espeak", "-ven-us", text])
+    else:
+        if online_mode:
+            print("Online mode: Non-Chinese, using espeak")
+        else:
+            print("Offline mode: using espeak")
+        subprocess.run(["espeak", "-ven-us", text])
+
+    return text
+
+print("\n" + "="*50)
+print("PROGRAM READY")
+print("Type 'c' to capture, 'q' to quit")
+print("Press 'm' to toggle mode")
+print("Say 'capture' to scan, 'exit' to quit")
+print("Press 's' in window to capture")
+print("="*50)
+print("Current mode: OFFLINE (espeak only)")
+print("Press 'm' to switch to ONLINE (Edge TTS for Chinese)")
+print("="*50 + "\n")
+
+while True:
+    image = camera.capture_array()
+    cv2.imshow("Frame", image)
+
+    try:
+        data = stream.read(4000, exception_on_overflow=False)
+        if recognizer.AcceptWaveform(data):
+            result = json.loads(recognizer.Result())
+            command = result.get('text', '').strip().lower()
+            if command == 'capture':
+                print("Voice: capture")
+                capture_img = camera.capture_array()
+                cv2.imshow("Captured", capture_img)
+                ocr_and_speak(capture_img)
+                cv2.destroyWindow("Captured")
+                recognizer.Reset()
+            elif command == 'online':
+                online_mode = True
+                print("Voice: switched to ONLINE mode")
+                recognizer.Reset()
+            elif command == 'offline':
+                online_mode = False
+                print("Voice: switched to OFFLINE mode")
+                recognizer.Reset()
+            elif command == 'exit':
+                print("Voice: exit")
+                break
+    except:
+        pass
+
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('s'):
+        print("Key: s")
+        capture_img = camera.capture_array()
+        cv2.imshow("Captured", capture_img)
+        ocr_and_speak(capture_img)
+        cv2.destroyWindow("Captured")
+    elif key == ord('q'):
+        print("Key: q")
+        break
+    elif key == ord('m'):
+        online_mode = not online_mode
+        if online_mode:
+            print("\n>>> MODE CHANGED: ONLINE (Edge TTS for Chinese) <<<\n")
+        else:
+            print("\n>>> MODE CHANGED: OFFLINE (espeak only) <<<\n")
+
+    if select.select([sys.stdin], [], [], 0)[0]:
+        cmd = sys.stdin.readline().strip().lower()
+        if cmd == 'c':
+            print("Terminal: capture")
+            capture_img = camera.capture_array()
+            cv2.imshow("Captured", capture_img)
+            ocr_and_speak(capture_img)
+            cv2.destroyWindow("Captured")
+        elif cmd == 'q':
+            print("Terminal: quit")
+            break
+        elif cmd == 'm':
+            online_mode = not online_mode
+            if online_mode:
+                print("\n>>> MODE CHANGED: ONLINE (Edge TTS for Chinese) <<<\n")
+            else:
+                print("\n>>> MODE CHANGED: OFFLINE (espeak only) <<<\n")
+
+stream.stop_stream()
+stream.close()
+p.terminate()
+cv2.destroyAllWindows()
+camera.close()
+print("Program exited.")
 ```
 
 # Bill of Materials
