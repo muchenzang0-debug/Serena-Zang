@@ -12,16 +12,15 @@ The microphone captures voice commands, and the Raspberry Pi processes them usin
   
 # Final Milestone
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mqI8-Abo-D4?si=EKvofUFefMj5y0Ey" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+I’ve implemented multilingual support. Technically, the system works like this: Tesseract OCR extracts text from images in four languages, including English, Chinese, French, and Spanish, with language packs installed to enable multilingual support. For speech output, I added Edge TTS engine. While eSpeak runs offline and handles English, French, and Spanish well, but it cannot read Chinese properly. Edge TTS solves this — when online mode is enabled and Chinese text is detected, the system automatically switches to Edge TTS for natural Chinese pronunciation. The user can switch between online and offline modes anytime using voice commands or keyboard, and the system deals with internet failures by falling back to eSpeak.
 
-For your final milestone, explain the outcome of your project. Key details to include are:
-- What you've accomplished since your previous milestone
-- What your biggest challenges and triumphs were at BSE
-- A summary of key topics you learned about
-- What you hope to learn in the future after everything you've learned at BSE
+My biggest challenge was actually the SSH connection, I ran into a lot of issues there, and since I’ve already explained that part in detail below in the First Milestone section, I won’t repeat it all here. Another major challenge I faced was when I added aggressive preprocessing filters to remove background noise from the breadboard. These filters went too far and started removing fine details needed for Chinese character detection, so the system suddenly stopped recognizing Chinese altogether. I went back to the last working version, gradually re-added the filters with weaker settings, and found a balance between removing noise and remaining text clarity. 
 
+Throughout this project, I gained experience in several key topics. First, hardware-software integration. I learned how to connect and configure components like the camera, microphone, and speaker on a Raspberry Pi. Second, offline AI models. I worked with Vosk for speech recognition and Tesseract for OCR, both running locally on the device. Third, image preprocessing. I understood how techniques like resizing, grayscale conversion, and thresholding directly impact OCR accuracy. Fourth, the ability of debugging and problem-solving, from fixing audio sample rate issues to troubleshooting SSH connections and environment management.
+
+Looking ahead, I want to continue exploring AI-related projects with the Raspberry Pi, particularly in the area of human-computer interaction. I'm also interested in trying out Arduino for robotics and sensor-based projects, since it offers a different approach to hardware control.
 
 
 # Second Milestone
