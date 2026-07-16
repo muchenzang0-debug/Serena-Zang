@@ -33,7 +33,6 @@ This optical recognition project uses a Raspberry Pi as the core hardware with a
 ![Schematics of This Project](https://raw.githubusercontent.com/muchenzang0-debug/Serena-Zang/refs/heads/gh-pages/IMG_0292.JPG)
 
 # Code
-Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
 ```python
 import cv2
