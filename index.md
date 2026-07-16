@@ -250,5 +250,5 @@ print("Program exited.")
 
 # Other Resources/Examples
 
-- [Guide](https://maker.pro/raspberry-pi/tutorial/optical-character-recognizer-using-raspberry-pi-with-opencv-and-tesseract)
+- [Optical Character Recognition Using Raspberry Pi With OpenCV and Tesseract](https://maker.pro/raspberry-pi/tutorial/optical-character-recognizer-using-raspberry-pi-with-opencv-and-tesseract)
 
