@@ -4,7 +4,7 @@ The microphone captures voice commands, and the Raspberry Pi processes them usin
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
-| Serena Z | No.2 High School of East China Normal University | Electrical Engineering | Incoming 10th grade
+| Serena Z | No.2 High School of East China Normal University | Electrical Engineering | Incoming sophomore
 
 **Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
 
