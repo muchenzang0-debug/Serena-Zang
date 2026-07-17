@@ -251,4 +251,6 @@ print("Program exited.")
 # Other Resources/Examples
 
 - [Optical Character Recognition Using Raspberry Pi With OpenCV and Tesseract](https://maker.pro/raspberry-pi/tutorial/optical-character-recognizer-using-raspberry-pi-with-opencv-and-tesseract)
+- [Raspberry_Pi_OCR_Text-to-Speech_Reader](https://github.com/logicclearner/Raspberry_Pi_OCR_Text-to-Speech_Reader)
+- [Advanced Voice To Voice with Sentiment Prediction](https://github.com/Asnanp/Voice-to-Voice-AI)
 
